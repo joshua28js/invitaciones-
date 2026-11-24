@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600&family=Dancing+Script:wght@600&family=Pacifico&family=Cormorant+Garamond&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  .fancy{font-family:'Great Vibes', cursive}
+  .hero-negocio{background:linear-gradient(135deg,#2b2b2b,#8B6F47); color:white; text-align:center; padding:50px 20px}
+  .hero-negocio h1{font-size:55px; margin:0; line-height:1.1}
+  .hero-negocio p{max-width:600px; margin:15px auto; line-height:1.6}
+  .pasos{display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-top:20px}
+  .paso-mini{background:rgba(255,255,255,.15); padding:12px 20px; border-radius:30px; font-size:14px; color:white; border:1px solid rgba(255,255,255,.4); cursor:pointer; font-family:Arial;}
+  .paso-mini:hover{background:white; color:#2b2b2b; transform:scale(1.05);}
+  .paso-mini:active{transform:scale(0.95);}
+  .plantillas{background:white; padding:30px 15px; text-align:center}
+  .plantillas h2{font-size:36px; margin:0}
+  .lista-plantillas{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:20px}
+  .plantilla{width:150px; cursor:pointer; border:3px solid transparent; border-radius:18px; overflow:hidden; padding-bottom:10px; background:#fdf6ee}
+  .plantilla.activa{border-color:#C9A86A; transform:scale(1.03); box-shadow:0 10px 25px rgba(0,0,0,.15)}
+  .plantilla .mini{height:90px; display:flex; align-items:center; justify-content:center; font-size:30px; color:white}
+  .plantilla b{display:block; margin-top:8px; font-size:14px}
+  .plantilla span{font-size:11px; color:#888}
+  .todo{display:flex; gap:25px; flex-wrap:wrap; justify-content:center; padding:30px 20px; background:#f7f0e8; max-width:1100px; margin:0 auto; align-items:flex-start}
+  .panel{background:white; width:100%; max-width:430px; padding:28px; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,.08); flex:1 1 380px}
+  .panel h2{margin-top:0; color:#8B6F47; font-size:30px; text-align:center}
+  .panel h3{margin:22px 0 5px; color:#333; font-size:16px; border-bottom:1px solid #eee; padding-bottom:8px}
+  .panel label{display:block; margin-top:12px; font-size:13px; color:#666; font-weight:600}
+  .panel input, .panel textarea, .panel select{width:100%; padding:12px; margin-top:5px; border:1px solid #ddd; border-radius:12px; font-size:15px; font-family:Arial}
+  .panel button{width:100%; margin-top:12px; padding:14px; border:none; border-radius:12px; background:#8B6F47; color:white; font-size:15px; cursor:pointer; font-weight:bold}
+  .colores{display:flex; gap:10px; margin-top:10px; flex-wrap:wrap}
+  .color{width:38px; height:38px; border-radius:50%; cursor:pointer; border:3px solid transparent}
+  .color.activo{border-color:#333; transform:scale(1.15)}
+  .letras{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px}
+  .letra{padding:12px 10px; border:2px solid #ddd; border-radius:15px; cursor:pointer; font-size:18px; background:white; text-align:center}
+  .letra.activa{background:#333; color:white; border-color:#333}
+  .letra small{display:block; font-size:10px; font-family:Arial; opacity:.7}
+  #invitacion{width:100%; max-width:430px; min-height:700px; background:#FFFDF9; border-radius:20px; text-align:center; box-shadow:0 15px 40px rgba(0,0,0,.15); overflow:hidden; border:1px solid #e8dcc8; flex:1 1 380px}
+  .invit-foto{width:100%; height:260px; object-fit:cover; display:none}
+  .invit-foto.mostrar{display:block}
+  .invit-top{padding:28px 20px; color:white}
+  .invit-body{padding:30px 20px}
+  #nombresPreview{font-size:52px; margin:5px 0; line-height:1.1; word-break:break-word}
+  #nombresPreview *{font-family:inherit !important;}
+  #nombresPreview .y{font-size:38px; font-style:italic}
+  .linea{width:70px; height:2px; margin:20px auto}
+  .invit-body p{color:#555; line-height:1.7; font-size:15px}
+  .fecha{margin:18px 0; font-size:19px; letter-spacing:2px; font-weight:bold; color:#333}
+  .datos{background:#fdf6ee; padding:18px; border-radius:15px; margin:20px 0; line-height:1.9; font-size:14px; word-break:break-word}
+  .btn-confirmar{margin-top:10px; display:inline-block; padding:14px 28px; background:#25D366; color:white; border-radius:30px; font-size:15px; cursor:pointer; font-weight:bold; border:none; width:100%}
+  .contador{margin-top:15px; font-size:13px; color:#888}
+  .pedido{background:#2b2b2b; color:white; padding:45px 20px; text-align:center}
+  .pedido h2{font-size:42px; margin:0; line-height:1.1}
+  .pedido input, .pedido select{padding:14px; border-radius:12px; border:none; width:100%; max-width:280px; margin:8px; font-size:15px}
+  .pedido button{background:#25D366; color:white; border:none; padding:15px 35px; border-radius:30px; font-size:16px; font-weight:bold; cursor:pointer; margin-top:10px; width:100%; max-width:380px}
+  .precio{display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin:20px 0}
+  .precio div{background:white; color:#333; padding:18px; border-radius:15px; width:100%; max-width:180px; flex:1 1 150px}
+  .precio b{font-size:22px; color:#8B6F47}
+  @media (max-width: 768px){
+    .hero-negocio{padding:35px 15px}
+    .hero-negocio h1{font-size:42px}
+    .hero-negocio p{font-size:14px}
+    .plantillas h2{font-size:28px}
+    .lista-plantillas{flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; padding-bottom:10px; -webkit-overflow-scrolling:touch}
+    .plantilla{flex:0 0 130px; width:130px}
+    .todo{padding:15px 12px; gap:15px; flex-direction:column; align-items:center}
+    .panel{max-width:100%; padding:20px 16px; flex:none}
+    .panel h2{font-size:26px}
+    #invitacion{max-width:100%; flex:none; border-radius:15px; min-height:auto}
+    .invit-body{padding:22px 15px}
+    #nombresPreview{font-size:42px}
+    .fecha{font-size:16px; letter-spacing:1px}
+    .pedido{padding:35px 15px}
+    .pedido h2{font-size:32px}
+    .pedido input, .pedido select{max-width:100%; margin:6px 0}
+    .precio div{max-width:100%; flex:1 1 100%}
+    .letras{grid-template-columns:1fr 1fr}
+    .letra{font-size:16px; padding:10px 8px}
+  }
+  @media (max-width: 420px){
+    .hero-negocio h1{font-size:36px}
+    #nombresPreview{font-size:36px}
+    .letra{font-size:15px}
+    .panel button, .btn-confirmar{font-size:14px}
+  }
+</style>
+
+<div class="hero-negocio">
+  <div style="letter-spacing:4px; font-size:12px;">✨ CREA TU INVITACIÓN EN 1 MINUTO ✨</div>
+  <h1 class="fancy">Diseña tu Boda</h1>
+  <p>Elige tu plantilla, pon tus nombres, sube tu foto y compártela con todos tus invitados. Sin descargar apps, directo desde aquí.</p>
+  <div class="pasos">
+    <button class="paso-mini" onclick="irAPlantillas()">1️⃣ Elige plantilla</button>
+    <button class="paso-mini" onclick="irAPersonalizar()">2️⃣ Personaliza</button>
+    <button class="paso-mini" onclick="enviarWhatsApp()">3️⃣ Envía por WhatsApp</button>
+  </div>
+</div>
+
+<div class="plantillas" id="plantillas">
+  <h2 class="fancy">Elige tu estilo 💍</h2>
+  <p style="color:#888;">Toca una plantilla para ver cómo se ve tu invitación</p>
+  <div class="lista-plantillas">
+    <div class="plantilla activa" onclick="elegirPlantilla('clasica', this)"><div class="mini" style="background:#C9A86A;">💍</div><b>Clásica Dorada</b><span>Elegante y tradicional</span></div>
+    <div class="plantilla" onclick="elegirPlantilla('floral', this)"><div class="mini" style="background:#E8A0A0;">🌸</div><b>Floral Rosa</b><span>Romántica y dulce</span></div>
+    <div class="plantilla" onclick="elegirPlantilla('moderna', this)"><div class="mini" style="background:#2b2b2b;">✨</div><b>Moderna Negra</b><span>Minimalista y chic</span></div>
+    <div class="plantilla" onclick="elegirPlantilla('bosque', this)"><div class="mini" style="background:#A2C4A2;">🌿</div><b>Bosque Verde</b><span>Al aire libre</span></div>
+    <div class="plantilla" onclick="elegirPlantilla('playa', this)"><div class="mini" style="background:#A2B8D4;">🏖️</div><b>Playa Azul</b><span>Fresca y relajada</span></div>
+  </div>
+</div>
+
+<div class="todo" id="crear">
+<div class="panel">
+  <h2 class="fancy">Personaliza tu invitación</h2>
+  <h3>💑 Los Novios</h3>
+  <label>Nombre del novio</label><input id="novio" value="Bryan Joshua" oninput="actualizar()">
+  <label>Nombre de la novia</label><input id="novia" value="María Fernanda" oninput="actualizar()">
+  <label>Fecha de la boda</label><input type="date" id="fecha" value="2027-02-14" oninput="actualizar()">
+  <label>Hora</label><input id="hora" value="6:00 PM" oninput="actualizar()">
+  <label>Lugar / Iglesia</label><input id="lugar" value="Jardín Huella Feliz, Tlajomulco" oninput="actualizar()">
+  <h3>📸 Tu Foto</h3>
+  <label>Sube una foto de ustedes (opcional)</label>
+  <input type="file" id="fotoInput" accept="image/*" onchange="subirFoto(event)">
+  <button onclick="document.getElementById('fotoInput').click()" style="background:#eee; color:#333;">📷 Elegir foto</button>
+  <h3>🎨 Color y Letra</h3>
+  <label>Color de la boda</label>
+  <div class="colores">
+    <div class="color activo" style="background:#C9A86A" onclick="cambiarColor('#C9A86A', this)"></div>
+    <div class="color" style="background:#E8A0A0" onclick="cambiarColor('#E8A0A0', this)"></div>
+    <div class="color" style="background:#A2C4A2" onclick="cambiarColor('#A2C4A2', this)"></div>
+    <div class="color" style="background:#A2B8D4" onclick="cambiarColor('#A2B8D4', this)"></div>
+    <div class="color" style="background:#B18AC2" onclick="cambiarColor('#B18AC2', this)"></div>
+    <div class="color" style="background:#2b2b2b" onclick="cambiarColor('#2b2b2b', this)"></div>
+  </div>
+  <label>Tipo de letra para los nombres</label>
+  <div class="letras">
+    <div class="letra activa" data-font="Great Vibes" style="font-family:'Great Vibes', cursive;" onclick="cambiarLetra(this)">Bryan & María<small>Cursiva Elegante</small></div>
+    <div class="letra" data-font="Playfair Display" style="font-family:'Playfair Display', serif;" onclick="cambiarLetra(this)">BRYAN & MARÍA<small>Clásica Fuerte</small></div>
+    <div class="letra" data-font="Dancing Script" style="font-family:'Dancing Script', cursive;" onclick="cambiarLetra(this)">Bryan & María<small>Manuscrita</small></div>
+    <div class="letra" data-font="Pacifico" style="font-family:'Pacifico', cursive;" onclick="cambiarLetra(this)">Bryan & María<small>Moderna</small></div>
+    <div class="letra" data-font="Cormorant Garamond" style="font-family:'Cormorant Garamond', serif;" onclick="cambiarLetra(this)">Bryan & María<small>Romántica</small></div>
+    <div class="letra" data-font="Montserrat" style="font-family:'Montserrat', sans-serif;" onclick="cambiarLetra(this)">BRYAN & MARÍA<small>Minimalista</small></div>
+  </div>
+  <p id="letraActual" style="text-align:center; color:#8B6F47; font-weight:bold; margin-top:10px;">Letra actual: Great Vibes</p>
+  <h3>✍️ Mensaje y Detalles</h3>
+  <label>Mensaje de invitación</label><textarea id="mensaje" rows="3" oninput="actualizar()">Con la bendición de Dios y nuestros padres, queremos compartir con ustedes el día más importante de nuestras vidas.</textarea>
+  <label>Vestimenta</label><select id="vestimenta" onchange="actualizar()"><option>Formal - Elegante</option><option>Semiformal</option><option>De gala</option><option>Casual elegante</option></select>
+  <label>¿Mesa de regalos / Cuenta?</label><input id="regalos" value="Mesa de regalos: Liverpool #12345" oninput="actualizar()">
+  <h3>📲 Para recibir pedidos</h3>
+  <div style="background:#e8f5e9; padding:15px; border-radius:12px; border:2px solid #25D366;">
+    <label style="color:#1a7a2e; margin-top:0;">📲 NÚMERO DEL NEGOCIO - Aquí te llegan los pedidos</label>
+    <input id="whatsapp" value="5213312345678" oninput="mostrarDestino()" style="border:2px solid #ffc107; font-weight:bold;">
+    <p id="destinoTexto" style="font-size:13px; color:#1a7a2e; margin:8px 0 0;">✅ Los pedidos se enviarán a: 5213312345678</p>
+    <small style="color:#555;">👉 Cambia este número por el TUYO. Ej: si tu número es 3312345678, pon 5213312345678</small>
+  </div>
+  <button onclick="window.print()">🖨️ Imprimir / Guardar en PDF</button>
+  <button onclick="compartir()" style="background:#25D366;">📲 Compartir mi invitación</button>
+</div>
+
+<div id="invitacion">
+  <img id="fotoPreview" class="invit-foto" src="">
+  <div class="invit-top" id="invitTop" style="background:#C9A86A;"><div style="font-size:11px; letter-spacing:5px;">¡NOS CASAMOS!</div><div style="font-size:40px; margin-top:8px;">💍</div></div>
+  <div class="invit-body">
+    <h1 id="nombresPreview" style="font-family:'Great Vibes', cursive;"><span id="pNovio">Bryan Joshua</span><br><span class="y" id="ySimbolo">&</span><br><span id="pNovia">María Fernanda</span></h1>
+    <div class="linea" id="lineaColor" style="background:#C9A86A;"></div>
+    <p id="pMensaje">Con la bendición de Dios y nuestros padres, queremos compartir con ustedes el día más importante de nuestras vidas.</p>
+    <div class="fecha" id="pFecha">14 DE FEBRERO DE 2027</div>
+    <div class="contador" id="contador">⏳ Faltan días para el gran día</div>
+    <div class="datos">📍 <b id="pLugar">Jardín Huella Feliz, Tlajomulco</b><br>🕕 <span id="pHora">6:00 PM</span><br>👗 Vestimenta: <span id="pVestimenta">Formal - Elegante</span><br>🎁 <span id="pRegalos">Mesa de regalos: Liverpool #12345</span></div>
+    <p>Tu presencia es el mejor regalo.<br>¡Te esperamos!</p>
+    <button class="btn-confirmar" onclick="confirmarAsistencia()">✅ Confirmar Asistencia</button>
+    <p style="font-size:11px; color:#aaa; margin-top:12px;">Hecha con 💍 Diseña tu Boda</p>
+  </div>
+</div>
+</div>
+
+<div class="pedido" id="pedido">
+  <h2 class="fancy">¿Te gustó? Pídela aquí</h2>
+  <p>Déjanos tus datos y te contactamos por WhatsApp</p>
+  <div class="precio">
+    <div><span>🌸 Básica</span><br><b>$150</b><br><small>1 plantilla + WhatsApp</small></div>
+    <div><span>💍 Premium</span><br><b>$299</b><br><small>Foto + Cuenta regresiva + Mapa</small></div>
+    <div><span>✨ VIP</span><br><b>$499</b><br><small>Todo + Video + Música</small></div>
+  </div>
+  <input id="nombreCliente" placeholder="Tu nombre">
+  <input id="telefonoCliente" placeholder="Tu WhatsApp">
+  <select id="paqueteCliente"><option>Básica $150</option><option>Premium $299</option><option>VIP $499</option></select><br>
+  <p id="destinoAbajo" style="font-size:13px; color:#a5d6a7;">Se enviará al número del negocio: 5213312345678</p>
+  <button onclick="pedirInvitacion()">📲 Pedir mi invitación por WhatsApp</button>
+</div>
+
+<script>
+let colorActual = '#C9A86A';
+function getNumeroNegocio(){ return document.getElementById('whatsapp').value.replace(/[^0-9]/g, ''); }
+function mostrarDestino(){ let n=getNumeroNegocio(); document.getElementById('destinoTexto').innerText='✅ Los pedidos se enviarán a: '+n; document.getElementById('destinoAbajo').innerText='Se enviará al número del negocio: '+n; }
+function irAPlantillas(){ document.getElementById('plantillas').scrollIntoView({behavior:'smooth'}); }
+function irAPersonalizar(){ document.getElementById('crear').scrollIntoView({behavior:'smooth'}); setTimeout(function(){ document.getElementById('novio').focus(); }, 800); }
+function enviarWhatsApp(){ document.getElementById('pedido').scrollIntoView({behavior:'smooth'}); setTimeout(function(){ compartir(); }, 800); }
+function actualizar(){
+  document.getElementById('pNovio').innerText = document.getElementById('novio').value || 'Novio';
+  document.getElementById('pNovia').innerText = document.getElementById('novia').value || 'Novia';
+  document.getElementById('pHora').innerText = document.getElementById('hora').value;
+  document.getElementById('pLugar').innerText = document.getElementById('lugar').value;
+  document.getElementById('pMensaje').innerText = document.getElementById('mensaje').value;
+  document.getElementById('pVestimenta').innerText = document.getElementById('vestimenta').value;
+  document.getElementById('pRegalos').innerText = document.getElementById('regalos').value;
+  let f = document.getElementById('fecha').value;
+  if(f){ let d = new Date(f+'T12:00:00'); document.getElementById('pFecha').innerText = d.toLocaleDateString('es-MX',{day:'numeric', month:'long', year:'numeric'}).toUpperCase(); let diff = Math.ceil((d - new Date())/(1000*60*60*24)); document.getElementById('contador').innerText = diff > 0 ? '⏳ Faltan '+diff+' días para el gran día' : '🎉 ¡Hoy es el gran día!'; }
+}
+function elegirPlantilla(tipo, el){ document.querySelectorAll('.plantilla').forEach(p=>p.classList.remove('activa')); el.classList.add('activa'); let colores = {clasica:'#C9A86A', floral:'#E8A0A0', moderna:'#2b2b2b', bosque:'#A2C4A2', playa:'#A2B8D4'}; cambiarColor(colores[tipo], document.querySelector('.color')); }
+function cambiarColor(color, el){ colorActual=color; document.querySelectorAll('.color').forEach(c=>c.classList.remove('activo')); if(el) el.classList.add('activo'); document.getElementById('ySimbolo').style.color=color; document.getElementById('lineaColor').style.background=color; document.getElementById('invitTop').style.background=color; }
+function cambiarLetra(boton){
+  document.querySelectorAll('.letra').forEach(function(l){ l.classList.remove('activa'); });
+  boton.classList.add('activa');
+  let fuente = boton.getAttribute('data-font');
+  let titulo = document.getElementById('nombresPreview');
+  titulo.style.fontFamily = "'" + fuente + "', cursive, serif, sans-serif";
+  document.getElementById('pNovio').style.fontFamily = "'" + fuente + "', cursive, serif, sans-serif";
+  document.getElementById('pNovia').style.fontFamily = "'" + fuente + "', cursive, serif, sans-serif";
+  document.getElementById('ySimbolo').style.fontFamily = "'" + fuente + "', cursive, serif, sans-serif";
+  let texto = document.getElementById('letraActual');
+  if(texto){ texto.innerText = 'Letra actual: ' + fuente; }
+}
+function subirFoto(event){ let file=event.target.files[0]; if(!file) return; let reader=new FileReader(); reader.onload=function(e){ let img=document.getElementById('fotoPreview'); img.src=e.target.result; img.classList.add('mostrar'); }; reader.readAsDataURL(file); }
+function compartir(){ let texto='¡Nos casamos! 💍 '+document.getElementById('novio').value+' & '+document.getElementById('novia').value+' - '+document.getElementById('pFecha').innerText+' en '+document.getElementById('lugar').value; window.open('https://wa.me/?text='+encodeURIComponent(texto), '_blank'); }
+function confirmarAsistencia(){ let numero=getNumeroNegocio(); let mensaje='¡Hola! 💍 Soy invitado de la boda de '+document.getElementById('novio').value+' & '+document.getElementById('novia').value+'\n\n📅 '+document.getElementById('pFecha').innerText+'\n📍 '+document.getElementById('lugar').value+'\n\n✅ Confirmo mi asistencia. Mi nombre es: '; window.open('https://wa.me/'+numero+'?text='+encodeURIComponent(mensaje), '_blank'); }
+function pedirInvitacion(){ let numero=getNumeroNegocio(); let nombre=document.getElementById('nombreCliente').value||'Cliente'; let tel=document.getElementById('telefonoCliente').value||'No dejó teléfono'; let paquete=document.getElementById('paqueteCliente').value; let mensaje='¡Hola! 💍 Quiero pedir mi invitación\n\n👤 Mi nombre: '+nombre+'\n📱 Mi WhatsApp: '+tel+'\n💎 Paquete: '+paquete+'\n\n💑 Novios: '+document.getElementById('novio').value+' & '+document.getElementById('novia').value+'\n📅 Fecha: '+document.getElementById('pFecha').innerText; window.open('https://wa.me/'+numero+'?text='+encodeURIComponent(mensaje), '_blank'); }
+actualizar(); mostrarDestino();
+</script>
+{% endblock %}

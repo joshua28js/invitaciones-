@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitaciones de Boda 💍</title>
+<link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0; padding:0; background:#f7f0e8; font-family:Arial, sans-serif; overflow-x:hidden;}
+  main{width:100%; margin:0; padding:0; display:block;}
+  img{max-width:100%; height:auto;}
+</style>
+</head>
+<body>
+<main>
+  {% block contenido %}
+  {% endblock %}
+</main>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+</body>
+</html>
